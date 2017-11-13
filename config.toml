@@ -1,0 +1,15 @@
+# Site settings
+baseurl = "http://faq.gmt-china.org/"
+languageCode = "zh-CN"
+title = "GMT FAQs"
+theme = "hugo-faq-theme"
+
+# Do not build files for websites.
+disableKinds = ["RSS", "sietmap", "404"]
+
+[params]
+	# Custom styling
+	# To customize the styling of this theme, uncomment and edit the following line to point
+	# to your site's css in the assets/ directory.
+
+	custom_css = ["css/blue.css"]
