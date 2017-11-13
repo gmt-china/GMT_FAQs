@@ -1,4 +1,4 @@
 [submodule "themes/hugo-faq-theme"]
 	path = themes/hugo-faq-theme
-	url = git@github.com:gmt-china/hugo-faq-theme.git
+	url = https://github.com/gmt-china/hugo-faq-theme.git
 	branch = master
