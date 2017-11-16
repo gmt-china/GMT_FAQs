@@ -5,8 +5,8 @@ gsview可以查看中文，ps2raster报错
 
 ---
 
-gsview可以查看中文，ps2raster不报错，不显示中文
-ps2raster 或者说 psconvert 本质上是调用了 ghostscript 来实现图片格式转换，-C 的作用是将额外的参数传递给 ghostscript，-sFONTPATH=xxx这个实际上是 ghostscript 的参数。但是我们为了中文支持如果已经写了一个环境变量GS_FONTPATH为C:\Windows\Fonts了，是不是应该全局生效，这个传参就不需要了？
+gsview 可以查看中文，ps2raster 不报错，不显示中文
+ps2raster 或者说 psconvert 本质上是调用了 ghostscript 来实现图片格式转换，-C 的作用是将额外的参数传递给 ghostscript，-sFONTPATH=xxx这个实际上是 ghostscript 的参数。但是我们为了中文支持如果已经写了一个环境变量 `GS_FONTPATH` 为C:\Windows\Fonts了，是不是应该全局生效，这个传参就不需要了？
 
 ---
 
