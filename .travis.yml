@@ -1,9 +1,7 @@
 language: generic
 
 install:
-  - export HUGO_PACKAGE=`curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | grep browser_download_url | cut -d '"' -f 4 | grep Linux-64bit.tar.gz`
-  - wget $HUGO_PACKAGE -O hugo.tar.gz
-  - tar -xvf hugo.tar.gz hugo
+  - curl -L https://raw.githubusercontent.com/seisman/install/master/install-hugo.sh | bash
   - git submodule update --remote
 
 script:
