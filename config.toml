@@ -1,5 +1,5 @@
 # Site settings
-baseurl = "http://faqs.gmt-china.org/"
+baseurl = "https://faqs.gmt-china.org/"
 languageCode = "zh-CN"
 title = "GMT FAQs"
 theme = "hugo-faq-theme"
