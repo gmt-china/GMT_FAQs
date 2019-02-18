@@ -1,0 +1,25 @@
+pre {
+  margin: 8px 0 8px 8px;
+  position: relative;
+  border-radius: 5px;
+  border: 1px solid #C3CCD0;
+  background: #FFF;
+  overflow: auto;
+}
+pre code {
+ overflow: auto;
+ display: block;
+ padding-left: 15px;
+ line-height: 22px;
+ font-weight: 500;
+ color: green;
+ font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+code {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #c7254e;
+  background-color: #f9f2f4;
+  border-radius: 3px;
+}

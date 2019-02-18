@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="zh-CN" class="no-js">
+<head>
+	<meta name="generator" content="Hugo 0.54.0" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="https://faqs.gmt-china.org/css/reset.css">
+	<link rel="stylesheet" href="https://faqs.gmt-china.org/css/style.css">
+	<link rel="stylesheet" href="https://faqs.gmt-china.org/css/code.css">
+	
+        <link rel="stylesheet" href="https://faqs.gmt-china.org/css/GMT_FAQs.css">
+    
+	<script src="https://faqs.gmt-china.org/js/modernizr.js"></script>
+	<title>GMT FAQs</title>
+</head>
+<body>
+<header>
+	<h1>GMT FAQs</h1>
+</header>
+
+<section class="cd-faq">
+	<ul class="cd-faq-categories">
+        
+		<li><a href="#install">安装</a></li>
+		
+		<li><a href="#plot">绘图</a></li>
+		
+		<li><a href="#message">报错</a></li>
+		
+		<li><a href="#other">其他</a></li>
+		
+	</ul>
+
+	<div class="cd-faq-items">
+        
+		<ul id="install" class="cd-faq-group">
+			<li class="cd-faq-title"><h2>安装</h2></li>
+            
+            
+			<li id="install-0">
+				<a class="cd-faq-trigger" href="#install-0">Warning! PATH too long installer unable to modify PATH!</a>
+				<div class="cd-faq-content">
+					<p><p>安装过程中可能会出现 <code>Warning! PATH too long installer unable to modify PATH!</code> 的警告。</p>
+
+<p>出现此警告的原因是系统的环境变量 PATH 太长，GMT 安装包无法直接修改。</p>
+
+<p>解决办法是，先忽略这一警告，待安装完成后按照如下步骤自行修改系统环境变量 PATH 。</p>
+
+<ol>
+<li>点击“计算机”-&gt;“属性”-&gt;“高级系统设置”-&gt;“环境变量”打开“环境变量”编辑工具</li>
+<li>在“系统变量”部分中，选中“Path”并点击“编辑”</li>
+<li>在“变量值”的最后加上GMT目录的安装路径。需要注意“path”变量值中多个路径之间用英文分号分隔</li>
+</ol>
+</p>
+				</div>
+			</li>
+            
+            
+			<li id="install-1">
+				<a class="cd-faq-trigger" href="#install-1">Windows 安装 gmt 后提示找不到 gmt</a>
+				<div class="cd-faq-content">
+					<p><p>通常是没有修改环境变量：我的电脑右键-系统-高级-环境变量，在 path 变量最后加上你的 gmt 安装路径。</p>
+</p>
+				</div>
+			</li>
+            
+        </ul>
+        
+		<ul id="plot" class="cd-faq-group">
+			<li class="cd-faq-title"><h2>绘图</h2></li>
+            
+            
+			<li id="plot-0">
+				<a class="cd-faq-trigger" href="#plot-0">在使用地图投影时，为何无法给坐标轴加标签？</a>
+				<div class="cd-faq-content">
+					<p><p>命令如下:</p>
+
+<pre><code>gmt psbasemap -R0/10/0/10 -JM10c -B1 -Bx+l&quot;Latitude&quot; -By+l&quot;Longtitude&quot; &gt; a.ps
+</code></pre>
+
+<p>从绘图效果中可以看出，“Latitude” 和 “Longtitude” 是没有加进去的。这不是 Bug，而是一个  Feature 。因为对于使用地图投影绘制的地图，从“火车道”边框或标注上的“度”符号都可以直观的知道这是一个地图投影而不是笛卡尔投影。而对于地图投影来说，X 方向是经度、Y 方向是纬度，是基本常识，给坐标轴加 label 反而是多此一举，故而对于地图投影来说，坐标轴是不能加 label 的。如果执意要给坐标轴加 label，只能用 pstext 手动添加。</p>
+</p>
+				</div>
+			</li>
+            
+            
+			<li id="plot-1">
+				<a class="cd-faq-trigger" href="#plot-1">如何去掉某一方向上的刻度线，只保留边框？</a>
+				<div class="cd-faq-content">
+					<p><p>要绘制一张底图，要求：</p>
+
+<ol>
+<li>左边和下边有标注和刻度</li>
+<li>右边和上边无标注且无刻度</li>
+</ol>
+
+<p>如下图所示：</p>
+
+<figure>
+    <img src="/image/plot-Q5.png" width="400px"/> <figcaption>
+            <h4>利用 psbasemap 绘制无刻度边框</h4>
+        </figcaption>
+</figure>
+
+
+<p>方法很简单，只需要用 <code>psbasemap</code> 画两遍即可：</p>
+
+<pre><code>gmt psbasemap -J -R -B2 -BWS -K -O &gt;&gt; $PS
+gmt psbasemap -J -R -B0 -Ben -K -O &gt;&gt; $PS
+</code></pre>
+
+<p>其中，第一条命令绘制有标注和刻度的边框，第二条命令绘制无刻度线的边框。</p>
+</p>
+				</div>
+			</li>
+            
+            
+			<li id="plot-2">
+				<a class="cd-faq-trigger" href="#plot-2">如何只让横轴或纵轴单位显示为度</a>
+				<div class="cd-faq-content">
+					<p><p>有时需要在非地理投影方式中让横轴或纵轴显示为度。</p>
+
+<p>实现方法很简单，只需要在 <code>-J</code> 选项中加入 <code>d</code> 选项即可。</p>
+
+<pre><code>gmt psbasemap -R0/10/0/10 -JX4id/1i -B2 -K &gt; test.ps
+gmt psbasemap -R0/10/0/10 -JX4i/1id -B2 -Y2i -O &gt;&gt; test.ps
+</code></pre>
+
+<p>效果如下：</p>
+
+<figure>
+    <img src="/image/plot-Q6.png" width="400px"/> 
+</figure>
+
+</p>
+				</div>
+			</li>
+            
+            
+			<li id="plot-3">
+				<a class="cd-faq-trigger" href="#plot-3">如何将纵坐标上下反转，即 Y 轴从上到下依次增大？</a>
+				<div class="cd-faq-content">
+					<p><p>设置 <code>-J</code> 时把对应轴的长度设置为负值，比如 <code>-JX10c/-5c</code></p>
+</p>
+				</div>
+			</li>
+            
+            
+			<li id="plot-4">
+				<a class="cd-faq-trigger" href="#plot-4">如何让刻度线朝向图的内部？</a>
+				<div class="cd-faq-content">
+					<p><p>将刻度线的长度设置为负值即可。</p>
+
+<p>GMT4 用户可以用 <code>gmtset TICK_LENGTH -0.2c</code> 。</p>
+
+<p>GMT5 用户可以用 <code>gmt set MAP_TICK_LENGTH_PRIMARY -5p</code> 。</p>
+</p>
+				</div>
+			</li>
+            
+            
+			<li id="plot-5">
+				<a class="cd-faq-trigger" href="#plot-5">如何设置网格线的属性，比如线型、颜色等？</a>
+				<div class="cd-faq-content">
+					<p><p>GMT5 用户可以用 <code>gmt set MAP_GRID_PEN_PRIMARY 1p,gray,-</code> 来修改网格线属性。</p>
+</p>
+				</div>
+			</li>
+            
+        </ul>
+        
+		<ul id="message" class="cd-faq-group">
+			<li class="cd-faq-title"><h2>报错</h2></li>
+            
+            
+			<li id="message-0">
+				<a class="cd-faq-trigger" href="#message-0">Long input record (xxx bytes) was truncated to first xx bytes!</a>
+				<div class="cd-faq-content">
+					<p><p>出现该错误的原因是输入数据的一行超过特定的长度（一般是 512 字符），此时 GMT 会对输入数据做截断。出现该错误的常见原因是在将多个记录通过管道传递给命令时，记录末尾的换行符丢失，导致多个记录连成一行传递给命令。</p>
+</p>
+				</div>
+			</li>
+            
+            
+			<li id="message-1">
+				<a class="cd-faq-trigger" href="#message-1">Mismatch between actual (1) and expected (2) fields near line 10 (skipped)</a>
+				<div class="cd-faq-content">
+					<p><p>使用 <code>psxy</code> 或其他类似命令时，出现</p>
+
+<pre><code>psxy: Mismatch between actual (1) and expected (2) fields near line 10 (skipped)
+</code></pre>
+
+<p>出现该错误的原因是当前命令需要两列数据，而在第 10 行左右数据只有一列。
+此时需要人工检查一下第 10 行附近的数据。需要注意，这里的第 10 行不一定是准确数字。</p>
+</p>
+				</div>
+			</li>
+            
+            
+			<li id="message-2">
+				<a class="cd-faq-trigger" href="#message-2">pscoast 绘图时出现找不到 GSHHG 数据的错误</a>
+				<div class="cd-faq-content">
+					<p><p>使用 <code>pscoast</code> 绘制海岸线时报如下错误:</p>
+
+<pre><code>pscoast: GSHHG version 2.2.0 or newer is needed to use coastlines with GMT.
+Get and install GSHHG from ftp://ftp.soest.hawaii.edu/gshhg/.
+pscoast: Could not find file [GSHHG crude resolution shorelines]
+pscoast: No GSHHG databases available - must abort
+</code></pre>
+
+<p><code>pscoast</code> 能够正常运行的前提是：</p>
+
+<ol>
+<li>在 <code>$GMTHOME/share/coast</code> 目录下能够找到 GSHHG 数据文件（一堆以 .nc 结尾的文件）</li>
+<li>GSHHG 数据文件有可读权限</li>
+<li>GSHHG 数据文件的版本号大于 2.2.0</li>
+<li>系统的 netCDF 软件在编译时支持 netCDF4 格式</li>
+</ol>
+
+<p>针对以上几点，如果出现了题中所说的错误，可以通过如下方式逐一排除：</p>
+
+<ol>
+<li>检查 <code>$GMTHOME/share/coast</code> 目录下是否有 GSHHG 数据文件</li>
+<li>在 <code>share/coast</code> 目录下执行 <code>ls -l</code> 检查数据文件是否有可读权限</li>
+<li>打开 <code>README.TXT</code> 里，版本号是否大于 2.2.0</li>
+<li>终端执行 <code>nc-config --has-nc4</code> 以检查 netCDF 软件是否支持 netCDF4 格式，若为 <code>yes</code> 则表示支持</li>
+</ol>
+</p>
+				</div>
+			</li>
+            
+        </ul>
+        
+		<ul id="other" class="cd-faq-group">
+			<li class="cd-faq-title"><h2>其他</h2></li>
+            
+            
+			<li id="other-0">
+				<a class="cd-faq-trigger" href="#other-0">Windows 下写了 bat 脚本，执行 bat 脚本时黑屏一闪而过，看不到出错信息</a>
+				<div class="cd-faq-content">
+					<p><p>在脚本的最后加上 <code>pause</code> 即可</p>
+</p>
+				</div>
+			</li>
+            
+            
+			<li id="other-1">
+				<a class="cd-faq-trigger" href="#other-1">从 Linux 到 Windows 的脚本文件出现中文乱码怎么办？</a>
+				<div class="cd-faq-content">
+					<p><p>文本文件出现中文乱码一般都是文件编码格式的问题，将文件编码格式修改为 ANSI/GB2312</p>
+</p>
+				</div>
+			</li>
+            
+        </ul>
+        
+	</div>
+	<a href="#0" class="cd-close-panel">Close</a>
+</section>
+
+<script src="https://faqs.gmt-china.org/js/jquery-2.1.1.js"></script>
+<script src="https://faqs.gmt-china.org/js/jquery.mobile.custom.min.js"></script>
+<script src="https://faqs.gmt-china.org/js/main.js"></script>
+</body>
+</html>
